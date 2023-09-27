@@ -40,7 +40,7 @@ Then, schedule the program:
 
 ### Linux
 
-I use this program on macOS currently, so I don’t provide .deb packages for installation on Linux. However, the program _should_ work fine on Linux:
+I only use this program on macOS currently, so I don’t provide `.deb` packages or support for installation on Linux. However, the program _should_ work fine on Linux:
 
 1. Install the program, following the same directions as for manual installation on macOS.
 2. Schedule it to run for your user as desired via `cron`.
