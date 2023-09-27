@@ -34,7 +34,7 @@ Or, if you prefer to clone the repo:
 
 Then, schedule the program:
 
-1. Customize [`com.dzombak.periodic-docker-pull.sample.plist`](https://raw.githubusercontent.com/cdzombak/periodic-docker-pull/blob/main/com.dzombak.periodic-docker-pull.sample.plist) from this repository with the installation path you’ve chosen.
+1. Customize [`com.dzombak.periodic-docker-pull.sample.plist`](https://raw.githubusercontent.com/cdzombak/periodic-docker-pull/main/com.dzombak.periodic-docker-pull.sample.plist) from this repository with the installation path you’ve chosen.
 2. Rename it as desired.
 3. Move it to `~/Library/LaunchAgents`.
 
