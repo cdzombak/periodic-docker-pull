@@ -31,7 +31,7 @@ class PeriodicDockerPull < Formula
   end
 
   service do
-    run opt_bin/"_periodic-docker-pull"
+    run bin/"_periodic_docker_pull"
     run_type :interval
     interval 21600
     process_type :background
