@@ -177,7 +177,7 @@ jobs:
 
 
   homebrew:
-    name: Update ${{ needs.meta.outputs.brewtap_owner }}/${{ needs.meta.outputs.brewtap_name }} Homebrew Tap
+    name: Update Homebrew Tap
     needs: [meta, binaries]
     if: needs.meta.outputs.is_release == 'true'
     runs-on: ubuntu-latest
