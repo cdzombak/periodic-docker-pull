@@ -46,7 +46,8 @@ jobs:
         run: 'echo is_running_version_tag_update: ${{ steps.running_version_tag.outputs.is_running_version_tag_update }}'
     outputs:
       project_name: ${{ github.event.repository.name }}
-      bin_name: _${{ github.event.repository.name }}
+      # nb. bin name uses underscores; project/repo name uses hyphens
+      bin_name: _periodic_docker_pull
       bin_version: ${{ steps.bin_version.outputs.bin_version }}
       brewtap_owner: ${{ github.repository_owner }}
       brewtap_name: oss
