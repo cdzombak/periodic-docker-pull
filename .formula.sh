@@ -23,11 +23,11 @@ class PeriodicDockerPull < Formula
   license "LGPL-3.0"
 
   def install
-    bin.install "_periodic-docker-pull"
+    bin.install "_periodic_docker_pull"
   end
 
   test do
-    assert_match("${FORMULA_VERSION_NO_V}", shell_output("#{bin}/_periodic-docker-pull -version"))
+    assert_match("${FORMULA_VERSION_NO_V}", shell_output("#{bin}/_periodic_docker_pull -version"))
   end
 
   service do
