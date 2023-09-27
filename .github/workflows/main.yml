@@ -110,17 +110,22 @@ jobs:
       - name: Build binary
         run: make build
 
+      - name: List build results
+        working-directory: out
+        run: ls -R
+
       - name: Prepare release artifacts
         id: prepare_artifacts
-        working-directory: out
         run: |
+          pushd out
           mkdir ./gh-release
           tar --transform='flags=r;s|.*|${{ needs.meta.outputs.bin_name }}|' \
             -czvf ./gh-release/${{ needs.meta.outputs.project_name }}-${{ needs.meta.outputs.bin_version }}-all.tar.gz \
             ./${{ needs.meta.outputs.bin_name }}-${{ needs.meta.outputs.bin_version }}-all
           echo "tgz_sha256_allarch=$(shasum -a 256 ./gh-release/${{ needs.meta.outputs.project_name }}-${{ needs.meta.outputs.bin_version }}-all.tar.gz)" >> "$GITHUB_OUTPUT"
+          popd
 
-      - name: List build results
+      - name: List artifact build results
         working-directory: out
         run: ls -R
 
