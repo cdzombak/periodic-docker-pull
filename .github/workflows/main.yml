@@ -112,13 +112,19 @@ jobs:
 
       - name: Prepare release artifacts
         id: prepare_artifacts
-        working-directory: out/
+        working-directory: out
         run: |
           mkdir ./gh-release
-          find . -name '${{ needs.meta.outputs.bin_name }}-*' -executable -type f -maxdepth 1 -print0 | xargs -0 -I {} tar --transform='flags=r;s|.*|${{ needs.meta.outputs.bin_name }}|' -czvf ./gh-release/{}.tar.gz {}
-          echo "tgz_sha256_allarch=$(shasum -a 256 ./gh-release/${{ needs.meta.outputs.bin_name }}-${{ needs.meta.outputs.bin_version }}-all.tar.gz)" >> "$GITHUB_OUTPUT"
+          tar --transform='flags=r;s|.*|${{ needs.meta.outputs.bin_name }}|' \
+            -czvf ./gh-release/${{ needs.meta.outputs.project_name }}-${{ needs.meta.outputs.bin_version }}-all.tar.gz \
+            ./${{ needs.meta.outputs.bin_name }}-${{ needs.meta.outputs.bin_version }}-all
+          echo "tgz_sha256_allarch=$(shasum -a 256 ./gh-release/${{ needs.meta.outputs.project_name }}-${{ needs.meta.outputs.bin_version }}-all.tar.gz)" >> "$GITHUB_OUTPUT"
 
-      - name: Upload binary & packages
+      - name: List build results
+        working-directory: out
+        run: ls -R
+
+      - name: Upload binary
         uses: actions/upload-artifact@v3
         with:
           name: ${{ needs.meta.outputs.project_name }} Binary Artifacts
@@ -126,6 +132,7 @@ jobs:
 
     outputs:
       tgz_sha256_allarch: ${{ steps.prepare_artifacts.outputs.tgz_sha256_allarch }}
+
 
   release:
     name: GitHub (Pre)Release
@@ -138,7 +145,7 @@ jobs:
       contents: write
     steps:
 
-      - name: Download binaries & packages
+      - name: Download binary
         uses: actions/download-artifact@v3
         with:
           name: ${{ needs.meta.outputs.project_name }} Binary Artifacts
@@ -150,7 +157,7 @@ jobs:
       - name: Create GitHub release
         uses: softprops/action-gh-release@v1
         with:
-          files: out/${{ needs.meta.outputs.bin_name }}-*
+          files: out/${{ needs.meta.outputs.project_name }}-*
           prerelease: ${{ needs.meta.outputs.is_prerelease == 'true' }}
           fail_on_unmatched_files: true
           generate_release_notes: true
@@ -189,7 +196,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: brewtap
-          repository: ${{ needs.meta.outputs.brewtap_owner }}/${{ needs.meta.outputs.brewtap_name }}
+          repository: ${{ needs.meta.outputs.brewtap_owner }}/homebrew-${{ needs.meta.outputs.brewtap_name }}
           token: ${{ secrets.HOMEBREW_RELEASER_PAT }}
 
       - name: Generate formula file
