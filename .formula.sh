@@ -16,7 +16,7 @@ cat << EOF
 
 # This file was automatically generated. DO NOT EDIT.
 class PeriodicDockerPull < Formula
-  desc "Automatically pull a list of Docker image/tags on a regular basis."
+  desc "Automatically pull a list of Docker image/tags on a regular basis"
   homepage "https://github.com/cdzombak/periodic-docker-pull"
   url "https://github.com/cdzombak/periodic-docker-pull/releases/download/v${FORMULA_VERSION_NO_V}/periodic-docker-pull-${FORMULA_VERSION_NO_V}-all.tar.gz"
   sha256 "${FORMULA_TGZ_SHA256}"
