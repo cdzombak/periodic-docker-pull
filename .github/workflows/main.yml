@@ -204,7 +204,8 @@ jobs:
       - name: Commit and push
         uses: EndBug/add-and-commit@v9
         with:
-          add: './brewtap/${{ needs.meta.outputs.brewtap_formula_dir }}/${{ needs.meta.outputs.project_name }}.rb'
+          cwd: ./brewtap
+          add: './${{ needs.meta.outputs.brewtap_formula_dir }}/${{ needs.meta.outputs.project_name }}.rb'
           author_name: homebrew-releaser-bot
           author_email: homebrew-releaser-bot@users.noreply.github.com
           message: 'Add ${{ needs.meta.outputs.project_name }} v${{ needs.meta.outputs.bin_version }}'
