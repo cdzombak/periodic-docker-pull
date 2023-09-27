@@ -46,7 +46,7 @@ jobs:
         run: 'echo is_running_version_tag_update: ${{ steps.running_version_tag.outputs.is_running_version_tag_update }}'
     outputs:
       project_name: ${{ github.event.repository.name }}
-      bin_name: _periodic_docker_pull
+      bin_name: _${{ github.event.repository.name }}
       bin_version: ${{ steps.bin_version.outputs.bin_version }}
       brewtap_owner: ${{ github.repository_owner }}
       brewtap_name: oss
@@ -107,8 +107,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build binaries
+      - name: Build binary
         run: make build
+
       - name: Prepare release artifacts
         id: prepare_artifacts
         working-directory: out/
@@ -116,11 +117,13 @@ jobs:
           mkdir ./gh-release
           find . -name '${{ needs.meta.outputs.bin_name }}-*' -executable -type f -maxdepth 1 -print0 | xargs -0 -I {} tar --transform='flags=r;s|.*|${{ needs.meta.outputs.bin_name }}|' -czvf ./gh-release/{}.tar.gz {}
           echo "tgz_sha256_allarch=$(shasum -a 256 ./gh-release/${{ needs.meta.outputs.bin_name }}-${{ needs.meta.outputs.bin_version }}-all.tar.gz)" >> "$GITHUB_OUTPUT"
-      - name: Upload binaries & packages
+
+      - name: Upload binary & packages
         uses: actions/upload-artifact@v3
         with:
           name: ${{ needs.meta.outputs.project_name }} Binary Artifacts
           path: out/gh-release/*
+
     outputs:
       tgz_sha256_allarch: ${{ steps.prepare_artifacts.outputs.tgz_sha256_allarch }}
 
@@ -182,18 +185,18 @@ jobs:
         with:
           path: src
 
-      - name: Check out tap repo
+      - name: Checkout ${{ needs.meta.outputs.brewtap_owner }}/${{ needs.meta.outputs.brewtap_name }} tap repo
         uses: actions/checkout@v4
         with:
           path: brewtap
           repository: ${{ needs.meta.outputs.brewtap_owner }}/${{ needs.meta.outputs.brewtap_name }}
           token: ${{ secrets.HOMEBREW_RELEASER_PAT }}
 
-      - name: Generate new formula file
+      - name: Generate formula file
         run: |
           env \
-            FORMULA_VERSION_NO_V=${{ needs.meta.outputs.bin_version }} \
-            FORMULA_TGZ_SHA256=${{ needs.binaries.outputs.tgz_sha256_allarch }} \
+            FORMULA_VERSION_NO_V="${{ needs.meta.outputs.bin_version }}" \
+            FORMULA_TGZ_SHA256="${{ needs.binaries.outputs.tgz_sha256_allarch }}" \
             ./src/.formula.sh > ./brewtap/${{ needs.meta.outputs.brewtap_formula_dir }}/${{ needs.meta.outputs.project_name }}.rb
 
       - name: Commit and push
