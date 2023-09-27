@@ -111,10 +111,6 @@ jobs:
       - name: Build binary
         run: make build
 
-      - name: List build results
-        working-directory: out
-        run: ls -R
-
       - name: Prepare release artifacts
         id: prepare_artifacts
         run: |
@@ -125,10 +121,6 @@ jobs:
             ./${{ needs.meta.outputs.bin_name }}-${{ needs.meta.outputs.bin_version }}-all
           echo "tgz_sha256_allarch=$(shasum -a 256 ./gh-release/${{ needs.meta.outputs.project_name }}-${{ needs.meta.outputs.bin_version }}-all.tar.gz)" >> "$GITHUB_OUTPUT"
           popd
-
-      - name: List artifact build results
-        working-directory: out
-        run: ls -R
 
       - name: Upload binary
         uses: actions/upload-artifact@v3
@@ -156,9 +148,6 @@ jobs:
         with:
           name: ${{ needs.meta.outputs.project_name }} Binary Artifacts
           path: out
-      - name: List artifacts
-        working-directory: out
-        run: ls -R
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v1
