@@ -1,59 +1,53 @@
-# apply-crontab
+# periodic-docker-pull
 
-Better crontab management.
+Automatically pull a list of Docker image/tags on a regular basis.
 
-`apply-crontab` allows you to keep your crontab configuration in a version-controlled set of files (in `~/crontab.d` by default).
+## Configuration
 
-## Usage
+Place a list of Docker images/tags at `~/.config/periodic-docker-pull.txt`. Sample content:
 
 ```text
-apply-crontab [OPTIONS]
+catthehacker/ubuntu:full-latest
+catthehacker/ubuntu:act-latest
 ```
-
-With no options given, `apply-crontab` generates a crontab from the `*.cron` files in your `$CRONTAB_DIR` and applies them using the `crontab` command.
-
-### Options
-
-- `-i`: Init: create the `crontab.d` directory, populate it with the output of `crontab -l`, and initialize a Git repo in it.
-- `-p`: Preview: do not write to `crontab`; instead, preview the output in your `PAGER` (default: `less`).
-- `-h`: Print help to stderr and exit.
-- `-v`: Print version to stdout and exit.
-
-### Environment Variables
-
-- `CRONTAB_DIR`: Sets your crontab source directory. Defaults to `$HOME/crontab.d`.
 
 ## Installation
 
-### Debian via PackageCloud
-
-Install my PackageCloud Debian repository if you haven't already:
-```shell
-curl -s https://packagecloud.io/install/repositories/cdzombak/oss/script.deb.sh?any=true | sudo bash
-```
-
-Then install `apply-crontab` via `apt-get`:
-```shell
-sudo apt-get install apply-crontab
-```
-
-### Manual installation from build artifacts
-
-Pre-built binaries for are downloadable from each [GitHub Release](https://github.com/cdzombak/apply-crontab/releases). Debian packages for each release are available as well.
-
-### Build and install locally
+### macOS via Homebrew
 
 ```shell
-git clone https://github.com/cdzombak/apply-crontab.git
-cd apply-crontab
-make build
-
-cp out/apply-crontab-[VERSION]-all $INSTALL_DIR/apply-crontab
+brew install cdzombak/oss/periodic-docker-pull
+brew services start cdzombak/oss/periodic-docker-pull
 ```
+
+### macOS Manual Installation
+
+Install the program:
+
+1. Download the pre-built package from [a Github Release](https://github.com/cdzombak/periodic-docker-pull/releases/latest).
+2. Extract it and put `_periodic-docker-pull` in a location of your choice.
+
+Or, if you prefer to clone the repo:
+
+1. Clone the Git repository and run its `make build` target.
+2. Move `out/_periodic-docker-pull-VERSION-all` to a location of your choice; rename it as desired.
+
+Then, schedule the program:
+
+1. Customize [`com.dzombak.periodic-docker-pull.sample.plist`](https://raw.githubusercontent.com/cdzombak/periodic-docker-pull/blob/main/com.dzombak.periodic-docker-pull.sample.plist) from this repository with the installation path you’ve chosen.
+2. Rename it as desired.
+3. Move it to `~/Library/LaunchAgents`.
+
+### Linux
+
+I use this program on macOS currently, so I don’t provide .deb packages for installation on Linux. However, the program _should_ work fine on Linux:
+
+1. Install the program, following the same directions as for manual installation on macOS.
+2. Schedule it to run for your user as desired via `cron`.
 
 ## About
 
-- Issues: https://github.com/cdzombak/apply-crontab/issues/new
+- Issues: https://github.com/cdzombak/periodic-docker-pull/issues/new
 - Author: [Chris Dzombak](https://www.dzombak.com)
     - [GitHub: @cdzombak](https://www.github.com/cdzombak)
 
