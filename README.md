@@ -11,6 +11,12 @@ catthehacker/ubuntu:full-latest
 catthehacker/ubuntu:act-latest
 ```
 
+periodic-docker-pull v1.1.0 and later automatically run `docker image prune` after pulling. To disable automatic pruning, run:
+
+```shell
+touch "$HOME/.config/periodic-docker-pull-no-prune"
+```
+
 ## Installation
 
 ### macOS via Homebrew

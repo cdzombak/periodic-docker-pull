@@ -21,9 +21,13 @@ if [ ! -f "$HOME/.config/periodic-docker-pull.txt" ]; then
   exit 1
 fi
 
-while read -r IMAGE; do
-  if [ -z "$IMAGE" ]; then
+while read -r IMAGENAME; do
+  if [ -z "$IMAGENAME" ]; then
   	continue
   fi
-  docker pull "$IMAGE"
+  docker pull "$IMAGENAME"
 done < "$HOME/.config/periodic-docker-pull.txt"
+
+if [ ! -f "$HOME/.config/periodic-docker-pull-no-prune" ]; then
+  docker image prune -f
+fi
