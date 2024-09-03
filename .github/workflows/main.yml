@@ -144,7 +144,7 @@ jobs:
     steps:
 
       - name: Download binary
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: ${{ needs.meta.outputs.project_name }} Binary Artifacts
           path: out
